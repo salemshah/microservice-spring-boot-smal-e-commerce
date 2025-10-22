@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Inherit versions & plugin management from the aggregator parent -->
+    <parent>
+        <groupId>com.ecommerce</groupId>
+        <artifactId>ecommerce-parent</artifactId>
+        <version>1.0.0</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>user-service</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>user-service</name>
+    <description>User microservice for E-commerce</description>
+
+    <!-- If your parent already sets these properties, you may remove this block -->
+    <properties>
+        <java.version>21</java.version>
+    </properties>
+
+    <dependencies>
+        <!-- Web + Security + Validation -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!-- MongoDB -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+        </dependency>
+
+        <!-- JWT -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>0.13.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>0.13.0</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>0.13.0</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Password encoding -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-crypto</artifactId>
+        </dependency>
+
+        <!-- OpenAPI/Swagger -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.8.13</version>
+        </dependency>
+
+        <!-- Spring Cloud: Config Client + Bus (AMQP) + Actuator -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bus-amqp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <!-- Shared config (remove per-service ValidationConfig; keep the shared one here) -->
+        <dependency>
+            <groupId>com.ecommerce</groupId>
+            <artifactId>common-config</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <!-- Lombok + Tests -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- No dependencyManagement here; the parent imports Boot & Cloud BOMs -->
+
+    <build>
+        <plugins>
+            <!-- Versions come from parent’s pluginManagement -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <release>${java.version}</release>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
+        <!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<project xmlns="http://maven.apache.org/POM/4.0.0"-->
+<!--         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+<!--         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">-->
+<!--    <modelVersion>4.0.0</modelVersion>-->
+
+<!--&lt;!&ndash;    <parent>&ndash;&gt;-->
+<!--&lt;!&ndash;        <groupId>com.ecommerce</groupId>&ndash;&gt;-->
+<!--&lt;!&ndash;        <artifactId>ecommerce-parent</artifactId>&ndash;&gt;-->
+<!--&lt;!&ndash;        <version>1.0.0</version>&ndash;&gt;-->
+<!--&lt;!&ndash;        <relativePath>../pom.xml</relativePath>&ndash;&gt;-->
+<!--&lt;!&ndash;    </parent>&ndash;&gt;-->
+
+<!--    <parent>-->
+<!--        <groupId>org.springframework.boot</groupId>-->
+<!--        <artifactId>spring-boot-starter-parent</artifactId>-->
+<!--        <version>3.5.6</version>-->
+<!--        <relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;-->
+<!--    </parent>-->
+<!--    <groupId>com.ecommerce</groupId>-->
+
+<!--    <artifactId>user-service</artifactId>-->
+<!--    <version>0.0.1-SNAPSHOT</version>-->
+<!--    <name>user-service</name>-->
+<!--    <description>User microservice for E-commerce</description>-->
+
+<!--    <properties>-->
+<!--        <java.version>21</java.version>-->
+<!--        <spring-cloud.version>2025.0.0</spring-cloud.version>-->
+<!--    </properties>-->
+
+<!--    <dependencies>-->
+<!--        &lt;!&ndash; Web + Validation + Security &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-web</artifactId>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-security</artifactId>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-validation</artifactId>-->
+<!--        </dependency>-->
+
+<!--        &lt;!&ndash; MongoDB &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-data-mongodb</artifactId>-->
+<!--        </dependency>-->
+
+<!--        &lt;!&ndash; JWT &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>io.jsonwebtoken</groupId>-->
+<!--            <artifactId>jjwt-api</artifactId>-->
+<!--            <version>0.13.0</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>io.jsonwebtoken</groupId>-->
+<!--            <artifactId>jjwt-impl</artifactId>-->
+<!--            <version>0.13.0</version>-->
+<!--            <scope>runtime</scope>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>io.jsonwebtoken</groupId>-->
+<!--            <artifactId>jjwt-jackson</artifactId>-->
+<!--            <version>0.13.0</version>-->
+<!--            <scope>runtime</scope>-->
+<!--        </dependency>-->
+
+<!--        &lt;!&ndash; Password encoding &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.security</groupId>-->
+<!--            <artifactId>spring-security-crypto</artifactId>-->
+<!--        </dependency>-->
+
+<!--        &lt;!&ndash; OpenAPI/Swagger &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.springdoc</groupId>-->
+<!--            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>-->
+<!--            <version>2.8.13</version>-->
+<!--        </dependency>-->
+
+<!--        &lt;!&ndash; Spring Cloud Config + Bus + Actuator &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-starter-config</artifactId>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-starter-bus-amqp</artifactId>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-actuator</artifactId>-->
+<!--        </dependency>-->
+
+<!--        &lt;!&ndash; Shared config &ndash;&gt;-->
+<!--&lt;!&ndash;        <dependency>&ndash;&gt;-->
+<!--&lt;!&ndash;            <groupId>com.ecommerce</groupId>&ndash;&gt;-->
+<!--&lt;!&ndash;            <artifactId>common-config</artifactId>&ndash;&gt;-->
+<!--&lt;!&ndash;            <version>0.0.1-SNAPSHOT</version>&ndash;&gt;-->
+<!--&lt;!&ndash;        </dependency>&ndash;&gt;-->
+
+<!--        &lt;!&ndash; Lombok &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.projectlombok</groupId>-->
+<!--            <artifactId>lombok</artifactId>-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
+
+<!--        &lt;!&ndash; Tests &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-test</artifactId>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
+<!--    </dependencies>-->
+
+<!--    <dependencyManagement>-->
+<!--        <dependencies>-->
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.cloud</groupId>-->
+<!--                <artifactId>spring-cloud-dependencies</artifactId>-->
+<!--                <version>2025.0.0</version>-->
+<!--                <type>pom</type>-->
+<!--                <scope>import</scope>-->
+<!--            </dependency>-->
+<!--        </dependencies>-->
+<!--    </dependencyManagement>-->
+
+
+<!--    <build>-->
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-compiler-plugin</artifactId>-->
+<!--                <version>3.11.0</version>-->
+<!--                <configuration>-->
+<!--                    <release>${java.version}</release>-->
+<!--                    <compilerArgs>-->
+<!--                        <arg>-parameters</arg>-->
+<!--                    </compilerArgs>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+
+<!--            <plugin>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--                <version>3.5.6</version>-->
+<!--                <configuration>-->
+<!--                    <excludes>-->
+<!--                        <exclude>-->
+<!--                            <groupId>org.projectlombok</groupId>-->
+<!--                            <artifactId>lombok</artifactId>-->
+<!--                        </exclude>-->
+<!--                    </excludes>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+<!--        </plugins>-->
+<!--    </build>-->
+
+<!--</project>-->

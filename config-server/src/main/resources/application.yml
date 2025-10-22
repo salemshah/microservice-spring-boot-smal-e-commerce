@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: config-server
+
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/${GITHUB_USERNAME}/s-mc-e-commerce-spring-boot
+          force-pull: true     # forces fresh pull
+          clone-on-start: true # clones every time it starts
+          default-label: main
+          username: ${GITHUB_USERNAME}
+          password: ${GITHUB_TOKEN}
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: ecommerce # defied on docker-compose.yml
+    password: 420420 # defied on docker-compose.yml
+    virtual-host: /
+    listener:
+      simple:
+        acknowledge-mode: AUTO
+        retry:
+          enabled: true
+          initial-interval: 1s
+          max-attempts: 5
+          max-interval: 10s
+          multiplier: 2.0
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: busrefresh,refresh,health,info
+
+server:
+  port: 9999

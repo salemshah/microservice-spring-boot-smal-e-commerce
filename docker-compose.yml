@@ -1,0 +1,129 @@
+services:
+  # PostgreSQL
+  postgres:
+    image: postgres:16
+    container_name: postgres_db
+    restart: unless-stopped
+    ports:
+      - "5433:5432"           # external:internal
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - pg_network
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: order_db
+
+  # pgAdmin for visualizing PostgreSQL
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@local.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - pg_network
+
+  # MongoDB
+  mongodb:
+    image: mongo:latest  # or mongo:7, mongo:6, etc.
+    container_name: mongodb
+    restart: unless-stopped
+    ports:
+      - "28017:27017"
+    volumes:
+      - mongo_data:/data/db
+    command: ["mongod", "--bind_ip_all", "--noauth"]
+    networks:
+      - mongo_network
+
+
+  # Mongo Express (visual tool)
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mongo_express
+    restart: unless-stopped
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongodb
+      ME_CONFIG_MONGODB_ENABLE_ADMIN: true
+      ME_CONFIG_BASICAUTH_USERNAME: admin     # optional — protects the web UI
+      ME_CONFIG_BASICAUTH_PASSWORD: admin     # optional — change if needed
+    ports:
+      - "8085:8081"
+    depends_on:
+      - mongodb
+    networks:
+      - mongo_network
+
+
+  # MySQL
+  mysql:
+    image: mysql:8
+    container_name: mysql_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: product_db
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+        # This will automatically grant admin full privileges on startup
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - mysql_network
+
+  # phpMyAdmin (for MySQL)
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    platform: linux/amd64
+    container_name: phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: admin
+      PMA_PASSWORD: admin123
+      PMA_ARBITRARY: 1
+    ports:
+      - "8086:80"
+    depends_on:
+      - mysql
+    networks:
+      - mysql_network
+
+
+  rabbitmq:
+    image: rabbitmq:4-management
+    container_name: rabbitmq
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"     # AMQP protocol
+      - "15672:15672"   # Management console
+    environment:
+      RABBITMQ_DEFAULT_USER: ecommerce
+      RABBITMQ_DEFAULT_PASS: 420420
+      RABBITMQ_ERLANG_COOKIE: "secretcookie"
+    restart: unless-stopped
+    networks:
+      - ecom-net
+
+# Networks (isolated per DB)
+networks:
+  mysql_network:
+  pg_network:
+  mongo_network:
+  ecom-net:
+
+# Volumes (persistent storage)
+volumes:
+  mysql_data:
+  postgres_data:
+  mongo_data:
