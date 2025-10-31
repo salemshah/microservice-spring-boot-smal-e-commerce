@@ -6,7 +6,7 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/${GITHUB_USERNAME}/s-mc-e-commerce-spring-boot
+          uri: https://github.com/${GITHUB_USERNAME}/s-mc-e-commerce-spring-boot-configs
           force-pull: true     # forces fresh pull
           clone-on-start: true # clones every time it starts
           default-label: main
