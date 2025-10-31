@@ -72,5 +72,5 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/<your-username>/microservice-config-repo
+          uri: https://github.com/salemshah/s-mc-e-commerce-spring-boot-configs
           clone-on-start: true
