@@ -1,7 +1,6 @@
 package com.ecommerce.order.service;
 
-//import com.ecommerce.order.dto.ProductResponseDTO;
-import com.ecommerce.commonconfig.product.dto.ProductResponseDTO;
+import com.ecommerce.common.libraray.product.dto.ProductResponseDTO;
 import com.ecommerce.order.entity.*;
 import com.ecommerce.order.repository.*;
 import jakarta.transaction.Transactional;

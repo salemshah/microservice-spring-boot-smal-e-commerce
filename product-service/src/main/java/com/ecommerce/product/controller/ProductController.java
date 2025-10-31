@@ -1,7 +1,8 @@
 package com.ecommerce.product.controller;
 
+import com.ecommerce.common.libraray.product.dto.ProductResponseDTO;
 import com.ecommerce.product.dto.ProductRequestDTO;
-import com.ecommerce.product.dto.ProductResponseDTO;
+
 import com.ecommerce.product.entity.Product;
 import com.ecommerce.product.mapper.ProductMapper;
 import com.ecommerce.product.service.ProductService;

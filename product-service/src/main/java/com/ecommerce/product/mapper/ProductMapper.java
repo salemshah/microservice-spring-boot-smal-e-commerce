@@ -1,7 +1,8 @@
 package com.ecommerce.product.mapper;
 
+import com.ecommerce.common.libraray.product.dto.ProductResponseDTO;
 import com.ecommerce.product.dto.ProductRequestDTO;
-import com.ecommerce.product.dto.ProductResponseDTO;
+
 import com.ecommerce.product.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
