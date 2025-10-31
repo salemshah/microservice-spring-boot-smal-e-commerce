@@ -5,7 +5,7 @@
 
     <parent>
         <groupId>com.ecommerce</groupId>
-        <artifactId>s-mc-e-commerce</artifactId>
+        <artifactId>s-mc-e-commerce-spring-boot</artifactId>
         <version>1.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
