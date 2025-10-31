@@ -38,7 +38,7 @@
 
         <dependency>
             <groupId>com.ecommerce</groupId>
-            <artifactId>common-config</artifactId>
+            <artifactId>common-library</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 

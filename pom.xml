@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>common-config</module>
+        <module>common-library</module>
         <module>config-server</module>
         <module>discovery-service</module>
 

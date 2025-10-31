@@ -10,10 +10,10 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>common-config</artifactId>
+    <artifactId>common-library</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>common-config</name>
+    <name>common-library</name>
     <description>Shared Spring configuration for all microservices</description>
 
     <dependencies>

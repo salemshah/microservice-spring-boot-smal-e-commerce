@@ -20,9 +20,13 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Link to the product
+    // Link to the product-service
     @Column(nullable = false)
     private Long productId;
+
+    //Link to the product-service
+//    @Column(nullable = false)
+    private String productName;
 
     // Link back to the cart
     @ManyToOne(fetch = FetchType.LAZY)
