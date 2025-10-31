@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +22,8 @@ public class CartService {
     public Cart addToCart(Long userId, Long productId, int quantity, BigDecimal price) {
 //        Product product = productRepository.findById(productId)
 //                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
+
+
 
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseGet(() -> {
