@@ -25,7 +25,7 @@ public class CartItem {
     private Long productId;
 
     //Link to the product-service
-//    @Column(nullable = false)
+    @Column(nullable = false)
     private String productName;
 
     // Link back to the cart
