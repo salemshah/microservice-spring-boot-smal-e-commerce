@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.math.BigDecimal;
+import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor
@@ -19,56 +19,68 @@ public class CartService {
 
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
-    //    private final WebClient productWebClient;
     private final ProductClient productClient;
+
 
     @Transactional
     public Cart addToCart(Long userId, Long productId, int quantity) {
 
-        try {
+        // Retrieve product safely
+        ProductResponseDTO product = fetchProductOrThrow(productId);
 
-            ProductResponseDTO product = productClient.getProductById(productId);
+        // Retrieve or create cart
+        Cart cart = cartRepository.findByUserId(userId)
+                .orElseGet(() -> createNewCart(userId));
 
-            if (product == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
-
-            Cart cart = cartRepository.findByUserId(userId)
-                    .orElseGet(() -> {
-                        Cart c = new Cart();
-                        c.setUserId(userId);
-                        return cartRepository.save(c);
-                    });
-
-            // find existing item
-            CartItem existingItem = cart.getItems().stream()
-                    .filter(item -> item.getProductId().equals(productId))
+        // Find or create item (thread-safe with synchronized block on cart)
+        synchronized (cart) {
+            CartItem item = cart.getItems().stream()
+                    .filter(i -> i.getProductId().equals(productId))
                     .findFirst()
-                    .orElse(null);
+                    .orElseGet(() -> createNewItem(cart, product));
 
-            if (existingItem != null) {
-                existingItem.setProductName(existingItem.getProductName());
-                existingItem.setQuantity(existingItem.getQuantity() + quantity);
-                existingItem.calculateSubTotal();
-            } else {
-
-                CartItem newItem = CartItem.builder()
-                        .cart(cart)
-                        .productId(productId)
-                        .productName(product.getName())
-                        .quantity(quantity)
-                        .price(product.getPrice())
-                        .build();
-                newItem.calculateSubTotal();
-                cart.getItems().add(newItem);
-            }
+            // Always refresh product info to reflect current data
+            item.setProductName(product.getName());
+            item.setPrice(product.getPrice());
+            item.setQuantity(item.getQuantity() + quantity);
+            item.calculateSubTotal();
 
             cart.calculateTotalPrice();
-            return cartRepository.save(cart);
-
-        } catch (WebClientResponseException.NotFound ex) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
-        } catch (WebClientResponseException ex){
-            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error calling product-service" + ex.getMessage());
         }
+
+        // Persist changes (cascade should handle items)
+        return cartRepository.saveAndFlush(cart);
+    }
+
+    private ProductResponseDTO fetchProductOrThrow(Long productId) {
+        try {
+            return productClient.getProductById(productId);
+        } catch (WebClientResponseException.NotFound ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found for ID: " + productId);
+        } catch (WebClientResponseException ex) {
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Failed to contact product service: " + ex.getStatusText());
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error while fetching product", ex);
+        }
+    }
+
+    private Cart createNewCart(Long userId) {
+        Cart cart = new Cart();
+        cart.setUserId(userId);
+        cart.setItems(new ArrayList<>());
+        return cartRepository.save(cart);
+    }
+
+    private CartItem createNewItem(Cart cart, ProductResponseDTO product) {
+        CartItem item = CartItem.builder()
+                .cart(cart)
+                .productId(product.getId())
+                .productName(product.getName())
+                .price(product.getPrice())
+                .quantity(0)
+                .build();
+        cart.getItems().add(item);
+        return item;
     }
 
     public Cart getCartOf(Long userId) {
